@@ -15,7 +15,7 @@ export default function NavbarHeader(props) {
 					<Nav className="me-auto">
 						<Link className='nav-link' to="/">Home</Link>
 						<Link className='nav-link' to="/">Link</Link>
-						<NavDropdown title="Dropdown" id="basic-nav-dropdown">
+						<NavDropdown title="Acciones" id="basic-nav-dropdown">
 							<NavDropdown.Item >
 								Action
 							</NavDropdown.Item>
@@ -30,6 +30,7 @@ export default function NavbarHeader(props) {
 								Separated link
 							</NavDropdown.Item>
 						</NavDropdown>
+						<Link className='nav-link' to="/login">Login</Link>
 					</Nav>
 				</Navbar.Collapse>
 			</Container>
