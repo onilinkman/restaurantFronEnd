@@ -10,7 +10,8 @@ import Form from 'react-bootstrap/Form';
 import ListGroup from 'react-bootstrap/ListGroup';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Row from 'react-bootstrap/Row';
-import addPhoto from './add_photo.svg'
+import addPhoto from './add_photo.svg';
+import configProject from '../../../../configProject.json';
 
 export default function AddIngredient(props) {
 	const [validatedPrice, setValidatedPrice] = useState(false);
@@ -99,21 +100,43 @@ export default function AddIngredient(props) {
 		e.target.value = '';
 	};
 
-	const postData=()=>{
-		
-	}
+	const postData = async (obj) => {
+		//const body=JSON.stringify(obj)
+		obj.forEach((data) => {
+			console.log(data);
+		});
+		await fetch(configProject.dir_url + configProject.api_urls.addItem, {
+			method: 'POST',
+			headers:configProject.headersData,
+			body: obj,
+		})
+			.then((response) => {
+				if (response.status === 200) {
+					console.log('Se subio correctament');
+				}
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+	};
 
 	const makeJsonMenu = () => {
 		setValidatedPrice(true);
 		if (refForm.current.checkValidity() === true) {
-			var obj = {
+			let formData = new FormData();
+			formData.append('title', title);
+			formData.append('image', file);
+			formData.append('description', description);
+			formData.append('ingredients', JSON.stringify(ingredientsArray));
+			formData.append('price', refInputPrice.current.value);
+			/* var obj = {
 				title: title,
 				image: file,
 				description: description,
 				ingredients: ingredientsArray,
 				price: refInputPrice.current.value,
-			};
-			console.log(obj);
+			}; */
+			postData(formData);
 		}
 	};
 

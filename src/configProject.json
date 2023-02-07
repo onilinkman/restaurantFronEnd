@@ -1,13 +1,17 @@
 {
-    "dir_url":"http://192.168.0.123:8000",
-    "dir_url_dev":"https://my.api.mockaroo.com",
-    "api_urls":{
-        "recetas":"/recetas",
-        "getIp":"/getIp"
-    },
-    "headersList":{
-        "Accept":"*/*",
-        "X-API-Key": "afe6ef90",
-        "Content-Type":"application/json"
-    }
+	"dir_url": "http://192.168.0.123:8000",
+	"dir_url_dev": "https://my.api.mockaroo.com",
+	"api_urls": {
+		"getIp": "/getIp",
+		"recetas": "/recetas",
+		"addItem": "/api/addItem"
+	},
+	"headersList": {
+		"Accept": "*/*",
+		"X-API-Key": "afe6ef90",
+		"Content-Type": "application/json"
+	},
+	"headersData": {
+		"Accept": "*/*"
+	}
 }

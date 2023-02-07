@@ -12,50 +12,25 @@ export default function Cocina(props) {
 
 	const [status, setStatus] = useState({ isLoading: true, isError: false });
 
-	const makeCardArray=(arr,data)=>{
-		for (let i = 0; i < data.length; i++) {
-			arr.push(
-				<CardMenu
-					key={i}
-					listIngredients={data[i].ingredients}
-					cardTitle={data[i].name}
-					cardDescription={data[i].description}
-					urlImage={data[i].url_image}
-					price={data[i].price}
-				>
-					<Button variant="outline-danger">
-						Eliminar
-					</Button>
-					<Button variant="outline-info">Editar</Button>
-				</CardMenu>
-			);
+	const makeCardArray = (arr, data) => {
+		if (data?.length > 0) {
+			for (let i = 0; i < data.length; i++) {
+				arr.push(
+					<CardMenu
+						key={i}
+						listIngredients={data[i].ingredients}
+						cardTitle={data[i].name}
+						cardDescription={data[i].description}
+						urlImage={data[i].url_image}
+						price={data[i].price}
+					>
+						<Button variant="outline-danger">Eliminar</Button>
+						<Button variant="outline-info">Editar</Button>
+					</CardMenu>
+				);
+			}
 		}
 		return arr;
-	}
-	const callRecetas = () => {
-		fetch(configProject.dir_url + configProject.api_urls.recetas, {
-			method: 'GET',
-			headers: configProject.headersList,
-		})
-			.then((response) => {
-				if (response.status === 200) {
-					response.json();
-				} else {
-					setStatus({ isLoading: false, isError: true });
-				}
-			})
-			.then((data) => {
-				if (data) {
-					let arr = [];
-					arr=makeCardArray(arr,data)
-					setStatus({ isLoading: false, isError: false });
-					setListCard(arr);
-				}
-			})
-			.catch((err) => {
-				setStatus({ isLoading: false, isError: true });
-				console.log('dd', err);
-			});
 	};
 
 	const showBody = () => {
@@ -70,6 +45,36 @@ export default function Cocina(props) {
 	};
 
 	useEffect(() => {
+		const callRecetas = async () => {
+			await fetch(
+				configProject.dir_url + configProject.api_urls.recetas,
+				{
+					method: 'GET',
+					headers: configProject.headersList,
+				}
+			)
+				.then((response) => {
+					if (response.status === 200) {
+						response.json();
+					} else {
+						setStatus({ isLoading: false, isError: true });
+					}
+				})
+				.then((data) => {
+					if (data) {
+						let arr = [];
+						arr = makeCardArray(arr, data);
+						setListCard(arr);
+						setStatus({ isLoading: false, isError: false });
+					} else {
+						setStatus({ isLoading: false, isError: true });
+					}
+				})
+				.catch((err) => {
+					setStatus({ isLoading: false, isError: true });
+					console.log('dd', err);
+				});
+		};
 		callRecetas();
 	}, []);
 
