@@ -20,7 +20,7 @@ export default function ModalInput(props) {
         }
 		handleClose();
 	};
-	const acceptBtn=props.accepetBtn==="" || props.acceptBtn===undefined?"Guardar cambios":props.acceptBtn
+	const acceptBtn=props.acceptBtn==="" || props.acceptBtn===undefined?"Guardar cambios":props.acceptBtn
 	return (
 		<>
 			{iconBtn}

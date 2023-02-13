@@ -3,8 +3,11 @@
 	"dir_url_dev": "https://my.api.mockaroo.com",
 	"api_urls": {
 		"getIp": "/getIp",
-		"recetas": "/recetas",
+		"recetas": "/api/recetas",
 		"addItem": "/api/addItem"
+	},
+	"img_urls":{
+		"getImgMenu":"/uploads/imgMenu"
 	},
 	"headersList": {
 		"Accept": "*/*",

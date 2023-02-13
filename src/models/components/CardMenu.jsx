@@ -1,6 +1,11 @@
+import { useState } from 'react';
 import ListGroup from 'react-bootstrap/ListGroup';
+import add_photo from '../assets/add_photo.svg';
 
 export default function CardMenu(props) {
+	const [photo, setPhoto] = useState(
+		props.urlImage ? props.urlImage : add_photo
+	);
 	var cardTitle =
 		props.cardTitle === '' || props.cardTitle === undefined
 			? 'Titulo de la Card'
@@ -9,10 +14,6 @@ export default function CardMenu(props) {
 		props.cardDescription === '' || props.cardDescription === undefined
 			? ''
 			: props.cardDescription;
-
-	var url_image = props.urlImage
-		? props.urlImage
-		: 'http://dummyimage.com/170x100.png/cc0000/ffffff';
 
 	const darkTheme = 'bg-dark text-white';
 	const lightTheme = 'bg-light text-black';
@@ -41,13 +42,27 @@ export default function CardMenu(props) {
 		>
 			<div className={'card mb-3 ' + theme}>
 				<div className=" row row g-0">
-					<div className="col-md-4 ">
+					<div
+						className="col-md-4 "
+						style={{ display: 'flex', justifyContent: 'center' }}
+					>
 						<img
-							src={url_image}
+							src={photo}
 							className="img-thumbnai mb-4"
 							alt="imagen"
 							width="100%"
 							height="200px"
+							style={{ maxWidth: '200px', borderRadius: '8px' }}
+							loading="lazy"
+							onError={() => {
+								setPhoto(add_photo);
+								if (
+									props.onError &&
+									typeof props.onError === 'function'
+								) {
+									props.onError();
+								}
+							}}
 						></img>
 					</div>
 					<div className="col">
@@ -79,7 +94,7 @@ export default function CardMenu(props) {
 						</div>
 					</div>
 				</div>
-				<div className='d-flex justify-content-evenly'>
+				<div className="d-flex justify-content-evenly">
 					{props.children}
 				</div>
 			</div>

@@ -10,8 +10,10 @@ import Form from 'react-bootstrap/Form';
 import ListGroup from 'react-bootstrap/ListGroup';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Row from 'react-bootstrap/Row';
-import addPhoto from './add_photo.svg';
+import addPhoto from '../../../assets/add_photo.svg';
 import configProject from '../../../../configProject.json';
+import Spinner from 'react-bootstrap/Spinner';
+import Alert from 'react-bootstrap/Alert';
 
 export default function AddIngredient(props) {
 	const [validatedPrice, setValidatedPrice] = useState(false);
@@ -24,6 +26,8 @@ export default function AddIngredient(props) {
 	const [ingredientsArray, setIngredientsArray] = useState([]);
 	const [items, setItems] = useState([]);
 	const [title, setTitle] = useState('Titulo');
+	const [selectedFile, setSelectedFile] = useState(null);
+	const [isLoading, setIsloading] = useState(null);
 
 	const refDescription = useRef(null);
 	const refIngredient = useRef(null);
@@ -95,28 +99,65 @@ export default function AddIngredient(props) {
 		if (file) {
 			const objectUrl = URL.createObjectURL(file);
 			refImgPreview.current.src = objectUrl;
+			setSelectedFile(file);
 			//reader.readAsDataURL(file);
 		}
 		e.target.value = '';
 	};
 
+	const uploadMsg = () => {
+		if (!isLoading) {
+			return <></>;
+		}
+		if (!isLoading.success && !isLoading.error) {
+			return (
+				<div className="row justify-content-md-center">
+					<Spinner animation="grow" variant="warning" />
+				</div>
+			);
+		} else if (isLoading.success && !isLoading.error) {
+			return (
+				<Alert variant={'success'}>
+					Se subio correctamente los datos, haga click{' '}
+					<Link to="/Cocina">AQUI</Link> Para volver al menu de la
+					cocina o puede continuar subiendo mas platillos al menu
+				</Alert>
+			);
+		} else if (isLoading.success && isLoading.error) {
+			return (
+				<Alert variant={'warning'}>
+					Se subieron los datos Pero hubo un error al subir la imagen
+					(o no selecciono una imagen), haga click{' '}
+					<Link to="/Cocina">AQUI</Link> Para volver al menu de la
+					cocina y editar los datos e intentar subir su imagen
+				</Alert>
+			);
+		} else if (!isLoading.success && isLoading.error) {
+			<Alert variant={'danger'}>
+				Hubo un error al subir los datos. Compruebe su conexion a la
+				red, o que la aplicacion de escritorio este ejecutandose.
+			</Alert>;
+		}
+	};
+
 	const postData = async (obj) => {
 		//const body=JSON.stringify(obj)
-		obj.forEach((data) => {
-			console.log(data);
-		});
+		setIsloading({ success: false, error: false });
 		await fetch(configProject.dir_url + configProject.api_urls.addItem, {
 			method: 'POST',
-			headers:configProject.headersData,
+			headers: configProject.headersData,
 			body: obj,
 		})
 			.then((response) => {
 				if (response.status === 200) {
-					console.log('Se subio correctament');
+					setIsloading({ success: true, error: false });
+				} else {
+					setIsloading({ success: true, error: true });
 				}
 			})
 			.catch((err) => {
 				console.log(err);
+				setIsloading({ success: false, error: true });
 			});
 	};
 
@@ -125,17 +166,10 @@ export default function AddIngredient(props) {
 		if (refForm.current.checkValidity() === true) {
 			let formData = new FormData();
 			formData.append('title', title);
-			formData.append('image', file);
+			formData.append('image', selectedFile);
 			formData.append('description', description);
 			formData.append('ingredients', JSON.stringify(ingredientsArray));
 			formData.append('price', refInputPrice.current.value);
-			/* var obj = {
-				title: title,
-				image: file,
-				description: description,
-				ingredients: ingredientsArray,
-				price: refInputPrice.current.value,
-			}; */
 			postData(formData);
 		}
 	};
@@ -283,6 +317,7 @@ export default function AddIngredient(props) {
 					</div>
 				</div>
 			</div>
+			{uploadMsg()}
 			<div className="row justify-content-md-center mt-4">
 				<div className="col-md-auto">
 					<Button variant="success" onClick={makeJsonMenu}>
