@@ -6,6 +6,7 @@ import Login from './models/Pages/Login/Login';
 import Main from './models/Pages/main/Main';
 import Cocina from './models/Pages/Cocina/Cocina';
 import AddIngredient from './models/Pages/Cocina/AddIngredient/AddIngredient';
+import AddSection from './models/Pages/Cocina/AddSection/addSection';
 
 function App() {
 	return (
@@ -15,7 +16,8 @@ function App() {
 					<Route exact path='/login' element={<Login/>}/>
 					<Route exact path='/' element={<Main/>}/>
 					<Route exact path='/Cocina' element={<Cocina/>}/>
-					<Route exact path='/Cocina/add' element={<AddIngredient/>}/>
+					<Route exact path='/Cocina/add' element={<AddIngredient />} />
+					<Route exact path='/Cocina/sections' element={<AddSection />} />
 				</Routes>
 			</Layout>
 		</BrowserRouter>

@@ -4,10 +4,12 @@
 	"api_urls": {
 		"getIp": "/getIp",
 		"recetas": "/api/recetas",
-		"addItem": "/api/addItem"
+		"addItem": "/api/addItem",
+		"addSection": "/api/addSection",
+		"getSections": "/api/getSections"
 	},
-	"img_urls":{
-		"getImgMenu":"/uploads/imgMenu"
+	"img_urls": {
+		"getImgMenu": "/uploads/imgMenu"
 	},
 	"headersList": {
 		"Accept": "*/*",

@@ -6,7 +6,6 @@ import Spinner from 'react-bootstrap/Spinner';
 import { Button } from 'react-bootstrap';
 import { IoMdAdd } from 'react-icons/io';
 import Alert from 'react-bootstrap/Alert';
-import ModalInput from '../../components/ModalInput';
 
 export default function Cocina(props) {
 	const [listCard, setListCard] = useState([]);
@@ -22,9 +21,14 @@ export default function Cocina(props) {
 						listIngredients={data[i].ingredients}
 						cardTitle={data[i].title}
 						cardDescription={data[i].description}
-						urlImage={configProject.dir_url+configProject.img_urls.getImgMenu+"?img="+data[i].url_image}
+						urlImage={
+							configProject.dir_url +
+							configProject.img_urls.getImgMenu +
+							'?img=' +
+							data[i].url_image
+						}
 						price={data[i].price}
-						onError={()=>console.log("err")}
+						onError={() => {}}
 					>
 						<Button variant="outline-danger">Eliminar</Button>
 						<Button variant="outline-info">Editar</Button>
@@ -55,7 +59,7 @@ export default function Cocina(props) {
 					headers: configProject.headersList,
 				}
 			)
-				.then(response=>response.json())
+				.then((response) => response.json())
 				.then((data) => {
 					if (data) {
 						let arr = [];
@@ -83,19 +87,12 @@ export default function Cocina(props) {
 						Agregar Platillo
 					</Button>
 				</Link>
-				<ModalInput
-					title={'Agregar Seccion'}
-					iconOnClick={(f) => {
-						return (
-							<Button variant="secondary" onClick={f}>
-								<IoMdAdd /> Agregar Seccion
-							</Button>
-						);
-					}}
-					acceptBtn={'Agregar'}
-				>
-					hola
-				</ModalInput>
+				<Link to="/Cocina/sections">
+					<Button variant="secondary">
+						<IoMdAdd />
+						Agregar Seccion
+					</Button>
+				</Link>
 			</div>
 			<div className=" row row-cols-2 justify-content-md-center mt-3">
 				{showBody()}
