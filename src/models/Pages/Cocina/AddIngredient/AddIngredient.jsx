@@ -123,6 +123,17 @@ export default function AddIngredient(props) {
 					cocina o puede continuar subiendo mas platillos al menu
 				</Alert>
 			);
+		} else if (
+			isLoading.success &&
+			isLoading.error &&
+			isLoading.status === 503
+		) {
+			return (
+				<Alert variant={'warning'}>
+					El servidor esta ocupado con una transaccion, porfavor
+					espere e intente nuevamente, Gracias!!
+				</Alert>
+			);
 		} else if (isLoading.success && isLoading.error) {
 			return (
 				<Alert variant={'warning'}>
@@ -142,7 +153,7 @@ export default function AddIngredient(props) {
 
 	const postData = async (obj) => {
 		//const body=JSON.stringify(obj)
-		setIsloading({ success: false, error: false });
+		setIsloading({ success: false, error: false, isLoading: true });
 		await fetch(configProject.dir_url + configProject.api_urls.addItem, {
 			method: 'POST',
 			headers: configProject.headersData,
@@ -150,14 +161,24 @@ export default function AddIngredient(props) {
 		})
 			.then((response) => {
 				if (response.status === 200) {
-					setIsloading({ success: true, error: false });
+					setIsloading({
+						success: true,
+						error: false,
+						status: response.status,
+						isLoading: false,
+					});
 				} else {
-					setIsloading({ success: true, error: true });
+					setIsloading({
+						success: true,
+						error: true,
+						status: response.status,
+						isLoading: false,
+					});
 				}
 			})
 			.catch((err) => {
 				console.log(err);
-				setIsloading({ success: false, error: true });
+				setIsloading({ success: false, error: true, isLoading: false });
 			});
 	};
 
@@ -320,7 +341,11 @@ export default function AddIngredient(props) {
 			{uploadMsg()}
 			<div className="row justify-content-md-center mt-4">
 				<div className="col-md-auto">
-					<Button variant="success" onClick={makeJsonMenu}>
+					<Button
+						disabled={isLoading?.isLoading}
+						variant="success"
+						onClick={makeJsonMenu}
+					>
 						Finalizar Registro
 					</Button>
 				</div>

@@ -8,6 +8,7 @@ import { Button } from 'react-bootstrap';
 import Spinner from 'react-bootstrap/Spinner';
 import Table from 'react-bootstrap/Table';
 import configProject from '../../../../configProject.json';
+import ModalInput from '../../../components/ModalInput';
 
 export default function AddSection(props) {
 	const nameSection = useRef(null);
@@ -71,12 +72,14 @@ export default function AddSection(props) {
 		description.current.value = '';
 	};
 
-	const buttonsTable = (id_section,is_delete) => {
+	const buttonsTable = (id_section, is_delete) => {
 		if (is_delete === 1) {
 			return (
 				<Button
 					variant="danger"
-					onClick={() => console.log(id_section)}
+					onClick={() => {
+						deleteSection(id_section, 0);
+					}}
 				>
 					Ocultar
 				</Button>
@@ -85,12 +88,37 @@ export default function AddSection(props) {
 			return (
 				<Button
 					variant="primary"
-					onClick={() => console.log(id_section)}
+					onClick={() => {
+						deleteSection(id_section, 1);
+					}}
 				>
 					Restaurar
 				</Button>
 			);
 		}
+	};
+
+	const deleteSection = async (id_section, state) => {
+		await fetch(
+			configProject.dir_url + configProject.api_urls.deleteSection,
+			{
+				method: 'DELETE',
+				headers: configProject.headersList,
+				body: JSON.stringify({
+					id_section: id_section,
+					state: state,
+				}),
+			}
+		)
+			.then((res) => res.json())
+			.then((data) => {
+				if (data) {
+					setBodyTable(makeBodyTable(data));
+				}
+			})
+			.catch((err) => {
+				console.log('error to delete', err);
+			});
 	};
 
 	const makeBodyTable = (data) => {
@@ -103,8 +131,40 @@ export default function AddSection(props) {
 						<td>{i + 1}</td>
 						<td>{data[i].name}</td>
 						<td>{data[i].description}</td>
-						<td><Button variant='info'>Editar</Button></td>
-						<td>{buttonsTable(id_section,data[i].is_deleted)}</td>
+						<td>
+							<ModalInput
+								title={'Editar descripcion de ' + data[i].name}
+								iconOnClick={(f) => {
+									return (
+										<Button variant="info" onClick={f}>
+											Editar
+										</Button>
+									);
+								}}
+								saveChangeBtn={() => {
+									let desc = document.getElementById(
+										data[i].name + data[i].id_section
+									);
+									console.log(desc.value);
+									saveEdit(data[i].id_section, desc.value);
+								}}
+								acceptBtn={'Guardar cambio'}
+							>
+								<div className="mb-3">
+									<label className="form-label text-light">
+										Descripcion:
+									</label>
+									<textarea
+										className="form-control"
+										id={data[i].name + data[i].id_section}
+										rows="3"
+									>
+										{data[i].description}
+									</textarea>
+								</div>
+							</ModalInput>
+						</td>
+						<td>{buttonsTable(id_section, data[i].is_deleted)}</td>
 					</tr>
 				);
 				arrTr.push(newTr);
@@ -112,6 +172,29 @@ export default function AddSection(props) {
 			return arrTr;
 		}
 		return <p>no hay tabla</p>;
+	};
+
+	const saveEdit = async (id_section, description) => {
+		await fetch(
+			configProject.dir_url + configProject.api_urls.updateSection,
+			{
+				method: 'PUT',
+				headers: configProject.headersList,
+				body: JSON.stringify({
+					id_section: id_section,
+					description: description,
+				}),
+			}
+		)
+			.then((res) => res.json())
+			.then((data) => {
+				if (data) {
+					setBodyTable(makeBodyTable(data));
+				}
+			})
+			.catch((err) => {
+				console.log('error al obtener las secciones');
+			});
 	};
 
 	const getSections = async () => {

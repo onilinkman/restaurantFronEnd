@@ -7,6 +7,7 @@ import Main from './models/Pages/main/Main';
 import Cocina from './models/Pages/Cocina/Cocina';
 import AddIngredient from './models/Pages/Cocina/AddIngredient/AddIngredient';
 import AddSection from './models/Pages/Cocina/AddSection/addSection';
+import Relation from './models/Pages/Cocina/Relation/Relation';
 
 function App() {
 	return (
@@ -18,6 +19,7 @@ function App() {
 					<Route exact path='/Cocina' element={<Cocina/>}/>
 					<Route exact path='/Cocina/add' element={<AddIngredient />} />
 					<Route exact path='/Cocina/sections' element={<AddSection />} />
+					<Route exact path='/Cocina/relation' element={<Relation />} />
 				</Routes>
 			</Layout>
 		</BrowserRouter>

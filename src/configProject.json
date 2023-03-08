@@ -6,7 +6,13 @@
 		"recetas": "/api/recetas",
 		"addItem": "/api/addItem",
 		"addSection": "/api/addSection",
-		"getSections": "/api/getSections"
+		"getSections": "/api/getSections",
+		"getSectionNotDeleted": "/api/getSectionNotDeleted",
+		"updateSection": "/api/updateSection",
+		"deleteSection": "/api/deleteSection",
+		"getMenuSection": "/api/getMenuSection",
+		"postMenuSection": "/api/postMenuSection",
+		"deleteMenuSection": "/api/deleteMenuSection"
 	},
 	"img_urls": {
 		"getImgMenu": "/uploads/imgMenu"

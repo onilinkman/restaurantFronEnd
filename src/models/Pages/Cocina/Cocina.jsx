@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import Spinner from 'react-bootstrap/Spinner';
 import { Button } from 'react-bootstrap';
 import { IoMdAdd } from 'react-icons/io';
+import { VscReferences } from 'react-icons/vsc';
 import Alert from 'react-bootstrap/Alert';
 
 export default function Cocina(props) {
@@ -80,7 +81,7 @@ export default function Cocina(props) {
 
 	return (
 		<div className="container">
-			<div className="">
+			<div className="justify-content-md-center text-center">
 				<Link to="/Cocina/add">
 					<Button variant="info">
 						<IoMdAdd />
@@ -91,6 +92,13 @@ export default function Cocina(props) {
 					<Button variant="secondary">
 						<IoMdAdd />
 						Agregar Seccion
+					</Button>
+				</Link>
+
+				<Link to="/Cocina/relation">
+					<Button variant="secondary">
+						<VscReferences />{'  '}
+						Vincular platillo-Seccion
 					</Button>
 				</Link>
 			</div>
