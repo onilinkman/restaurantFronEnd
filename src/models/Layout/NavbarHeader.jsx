@@ -6,16 +6,17 @@ import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 
 export default function NavbarHeader(props) {
+	const scrollTop=()=>window.scrollTo(0,0)
 	return (
-		<Navbar collapseOnSelect  bg="dark" expand="lg" variant='dark' className='sticky-top'>
+		<Navbar collapseOnSelect bg="dark" expand="lg" variant='dark' className='sticky-top'>
 			<Container>
 				<Navbar.Brand>ExultSoft</Navbar.Brand>
 				<Navbar.Toggle aria-controls="responsive-navbar-nav" />
 				<Navbar.Collapse id="responsive-navbar-nav">
-					<Nav className="me-auto">
-						<Link className='nav-link' to="/">Home</Link>
-						<Link className='nav-link' to="/">Link</Link>
-						<NavDropdown title="Acciones" id="basic-nav-dropdown">
+					<Nav className="mr-auto">
+						<Nav.Link as={Link} className='nav-link' to="/" eventKey={"/"} onClick={scrollTop}>Home</Nav.Link>
+						<Nav.Link as={Link} className='nav-link' to="/" eventKey={"/"} onClick={scrollTop}>Link</Nav.Link>
+						<NavDropdown title="Acciones" id="collasible-nav-dropdown">
 							<NavDropdown.Item >
 								Action
 							</NavDropdown.Item>
@@ -30,7 +31,7 @@ export default function NavbarHeader(props) {
 								Separated link
 							</NavDropdown.Item>
 						</NavDropdown>
-						<Link className='nav-link' to="/login">Login</Link>
+						<Nav.Link as={Link} className='nav-link' to="/login" eventKey={"/login"} onClick={scrollTop}>Login</Nav.Link>
 					</Nav>
 				</Navbar.Collapse>
 			</Container>

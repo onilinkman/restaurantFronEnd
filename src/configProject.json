@@ -12,7 +12,10 @@
 		"deleteSection": "/api/deleteSection",
 		"getMenuSection": "/api/getMenuSection",
 		"postMenuSection": "/api/postMenuSection",
-		"deleteMenuSection": "/api/deleteMenuSection"
+		"deleteMenuSection": "/api/deleteMenuSection",
+		"getMenuById": "/api/getMenuById",
+		"postIngredient": "/api/addIngredient",
+		"deleteIngredient": "/api/deleteIngredient"
 	},
 	"img_urls": {
 		"getImgMenu": "/uploads/imgMenu"

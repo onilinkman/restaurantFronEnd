@@ -8,6 +8,7 @@ import Cocina from './models/Pages/Cocina/Cocina';
 import AddIngredient from './models/Pages/Cocina/AddIngredient/AddIngredient';
 import AddSection from './models/Pages/Cocina/AddSection/addSection';
 import Relation from './models/Pages/Cocina/Relation/Relation';
+import EditIngredient from './models/Pages/Cocina/EditIngredient/EditIngredient';
 
 function App() {
 	return (
@@ -20,6 +21,7 @@ function App() {
 					<Route exact path='/Cocina/add' element={<AddIngredient />} />
 					<Route exact path='/Cocina/sections' element={<AddSection />} />
 					<Route exact path='/Cocina/relation' element={<Relation />} />
+					<Route path='/Cocina/edit' element={<EditIngredient />} />
 				</Routes>
 			</Layout>
 		</BrowserRouter>

@@ -32,7 +32,9 @@ export default function Cocina(props) {
 						onError={() => {}}
 					>
 						<Button variant="outline-danger">Eliminar</Button>
-						<Button variant="outline-info">Editar</Button>
+						<Link to={"/Cocina/edit?id="+data[i].id_menu}>
+							<Button variant="outline-info">Editar</Button>
+						</Link>
 					</CardMenu>
 				);
 			}
@@ -97,7 +99,8 @@ export default function Cocina(props) {
 
 				<Link to="/Cocina/relation">
 					<Button variant="secondary">
-						<VscReferences />{'  '}
+						<VscReferences />
+						{'  '}
 						Vincular platillo-Seccion
 					</Button>
 				</Link>
