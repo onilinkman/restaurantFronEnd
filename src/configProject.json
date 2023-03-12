@@ -15,7 +15,9 @@
 		"deleteMenuSection": "/api/deleteMenuSection",
 		"getMenuById": "/api/getMenuById",
 		"postIngredient": "/api/addIngredient",
-		"deleteIngredient": "/api/deleteIngredient"
+		"deleteIngredient": "/api/deleteIngredient",
+		"putIngredient": "/api/putIngredient",
+		"updateImage": "/api/updateImage"
 	},
 	"img_urls": {
 		"getImgMenu": "/uploads/imgMenu"

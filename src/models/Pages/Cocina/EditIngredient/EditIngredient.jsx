@@ -30,13 +30,13 @@ export default function EditIngredient(props) {
 		quo odit suscipit, corporis nostrum corrupti magnam.`);
 	const [items, setItems] = useState([]);
 	const [title, setTitle] = useState('Titulo');
+	const [urlImage, setUrlImage] = useState('');
 	const [selectedFile, setSelectedFile] = useState(null);
 
 	const refDescription = useRef(null);
 	const refIngredient = useRef(null);
 	const refInputImage = useRef(null);
 	const refImgPreview = useRef(null);
-	const refInputTitle = useRef(null);
 	const refInputPrice = useRef(null);
 	const refForm = useRef(null);
 
@@ -50,10 +50,59 @@ export default function EditIngredient(props) {
 			setSelectedFile(file);
 		}
 		e.target.value = '';
+		updateImage(file);
+	};
+
+	const updateImage = (file) => {
+		let formData = new FormData();
+		formData.append('url_image', urlImage);
+		formData.append('id_menu', id);
+		formData.append('image', file);
+		fetch(configProject.dir_url + configProject.api_urls.updateImage, {
+			method: 'PUT',
+			headers: configProject.headersData,
+			body: formData,
+		})
+			.then(res=>{
+				if(res.status===200){
+					res.json()
+				}else if(res.status===406){
+					refImgPreview.current.src ='';
+				}
+
+			})
+			.then(data=>{
+				if(data?.newUrl_img){
+					setUrlImage(data.newUrl_img)
+				}
+			})
+			.catch((err) => {
+				console.log('error updateImage', err);
+			});
 	};
 
 	const saveDescription = () => {
-		setDescription(refDescription.current?.value);
+		if (refDescription.current?.value) {
+			fetch(
+				configProject.dir_url + configProject.api_urls.putIngredient,
+				{
+					method: 'PUT',
+					headers: configProject.headersList,
+					body: JSON.stringify({
+						id_menu: id,
+						description: refDescription.current.value,
+					}),
+				}
+			)
+				.then((res) => {
+					if (res.status === 200) {
+						setDescription(refDescription.current?.value);
+					}
+				})
+				.catch((err) => {
+					console.log(err);
+				});
+		}
 	};
 
 	const deleteIngredient = (id_ingredient) => {
@@ -156,6 +205,7 @@ export default function EditIngredient(props) {
 						'?img=' +
 						data[0].url_image;
 					setItems(makeListItem(data));
+					setUrlImage(data[0].url_image);
 				}
 			})
 			.catch((err) => {
@@ -275,6 +325,9 @@ export default function EditIngredient(props) {
 										INGRESE DATOS DEL TIPO NUMERICO Y CON 2
 										DIGITOS DESPUES DEL "."
 									</Form.Control.Feedback>
+									<Button variant="primary">
+										Guardar Monto
+									</Button>
 								</InputGroup>
 							</Row>
 						</Form>
