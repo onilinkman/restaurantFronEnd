@@ -15,3 +15,7 @@ code {
 .icon-white{
   color: #023373;
 }
+
+.cursor-pointer:hover{
+  cursor: pointer;
+}

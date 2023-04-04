@@ -17,7 +17,10 @@
 		"postIngredient": "/api/addIngredient",
 		"deleteIngredient": "/api/deleteIngredient",
 		"putIngredient": "/api/putIngredient",
-		"updateImage": "/api/updateImage"
+		"putPriceIngredient": "/api/putPriceIngredient",
+		"deleteItem": "/api/deleteItem",
+		"updateImage": "/api/updateImage",
+		"getIdsMenuBySection": "/api/getIdsMenuBySection"
 	},
 	"img_urls": {
 		"getImgMenu": "/uploads/imgMenu"

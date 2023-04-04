@@ -35,6 +35,20 @@ export default function CardMenu(props) {
 		return arr;
 	};
 
+	const bodyIngredients = props.listIngredients ? (
+		<>
+			<h5 className="card-title">Ingredientes:</h5>
+			<ListGroup
+				className={'list-group-flush ' + theme + ' overflow-auto'}
+				style={{ maxHeight: '100px' }}
+			>
+				{listConstructor()}
+			</ListGroup>
+		</>
+	) : (
+		<></>
+	);
+
 	return (
 		<div
 			className="container col justify-content-md-center"
@@ -71,17 +85,7 @@ export default function CardMenu(props) {
 							<p className="card-text text-white">
 								{cardDescription}
 							</p>
-							<h5 className="card-title">Ingredientes:</h5>
-							<ListGroup
-								className={
-									'list-group-flush ' +
-									theme +
-									' overflow-auto'
-								}
-								style={{ maxHeight: '100px' }}
-							>
-								{listConstructor()}
-							</ListGroup>
+							{bodyIngredients}
 							<p className="card-text">
 								<small className="text-muted">
 									{'Precio: ' +

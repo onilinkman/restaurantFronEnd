@@ -7,11 +7,34 @@ import { Button } from 'react-bootstrap';
 import { IoMdAdd } from 'react-icons/io';
 import { VscReferences } from 'react-icons/vsc';
 import Alert from 'react-bootstrap/Alert';
+import ModalInput from '../../components/ModalInput';
 
 export default function Cocina(props) {
 	const [listCard, setListCard] = useState([]);
 
 	const [status, setStatus] = useState({ isLoading: true, isError: false });
+
+	const callRecetas = async () => {
+		await fetch(configProject.dir_url + configProject.api_urls.recetas, {
+			method: 'GET',
+			headers: configProject.headersList,
+		})
+			.then((response) => response.json())
+			.then((data) => {
+				if (data) {
+					let arr = [];
+					arr = makeCardArray(arr, data);
+					setListCard(arr);
+					setStatus({ isLoading: false, isError: false });
+				} else {
+					setStatus({ isLoading: false, isError: true });
+				}
+			})
+			.catch((err) => {
+				setStatus({ isLoading: false, isError: true });
+				console.log('dd', err);
+			});
+	};
 
 	const makeCardArray = (arr, data) => {
 		if (data?.length > 0) {
@@ -31,8 +54,49 @@ export default function Cocina(props) {
 						price={data[i].price}
 						onError={() => {}}
 					>
-						<Button variant="outline-danger">Eliminar</Button>
-						<Link to={"/Cocina/edit?id="+data[i].id_menu}>
+						<ModalInput
+							title={'Desea eliminar ' + data[i].title + '?'}
+							iconOnClick={(f) => {
+								return (
+									<Button
+										variant="outline-danger"
+										onClick={f}
+									>
+										Eliminar
+									</Button>
+								);
+							}}
+							saveChangeBtn={() => {
+								fetch(
+									configProject.dir_url +
+										configProject.api_urls.deleteItem,
+									{
+										method: 'DELETE',
+										headers: configProject.headersList,
+										body: JSON.stringify({
+											id_menu: data[i].id_menu,
+										}),
+									}
+								)
+									.then((res) => {
+										if (res.status === 200) {
+											callRecetas();
+										}
+									})
+									.catch((err) => {
+										console.error(
+											'hubo un error al eliminar'
+										);
+									});
+							}}
+							acceptBtn={'Eliminar'}
+						>
+							{'Esta seguro de querer eliminar ' +
+								data[i].title +
+								'?. Las estadisticas y otras operaciones hechas con este platillo aun se podran ver en la analitica'}
+						</ModalInput>
+
+						<Link to={'/Cocina/edit?id=' + data[i].id_menu}>
 							<Button variant="outline-info">Editar</Button>
 						</Link>
 					</CardMenu>
@@ -54,30 +118,6 @@ export default function Cocina(props) {
 	};
 
 	useEffect(() => {
-		const callRecetas = async () => {
-			await fetch(
-				configProject.dir_url + configProject.api_urls.recetas,
-				{
-					method: 'GET',
-					headers: configProject.headersList,
-				}
-			)
-				.then((response) => response.json())
-				.then((data) => {
-					if (data) {
-						let arr = [];
-						arr = makeCardArray(arr, data);
-						setListCard(arr);
-						setStatus({ isLoading: false, isError: false });
-					} else {
-						setStatus({ isLoading: false, isError: true });
-					}
-				})
-				.catch((err) => {
-					setStatus({ isLoading: false, isError: true });
-					console.log('dd', err);
-				});
-		};
 		callRecetas();
 	}, []);
 

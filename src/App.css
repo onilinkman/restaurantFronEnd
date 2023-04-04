@@ -41,3 +41,7 @@
 	background: #7f7f7f;
 	color: white;
 }
+
+.zindex-3{
+	z-index: 3;
+}

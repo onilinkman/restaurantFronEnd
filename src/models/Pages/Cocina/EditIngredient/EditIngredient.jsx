@@ -63,17 +63,16 @@ export default function EditIngredient(props) {
 			headers: configProject.headersData,
 			body: formData,
 		})
-			.then(res=>{
-				if(res.status===200){
-					res.json()
-				}else if(res.status===406){
-					refImgPreview.current.src ='';
+			.then((res) => {
+				if (res.status === 200) {
+					res.json();
+				} else if (res.status === 406) {
+					refImgPreview.current.src = '';
 				}
-
 			})
-			.then(data=>{
-				if(data?.newUrl_img){
-					setUrlImage(data.newUrl_img)
+			.then((data) => {
+				if (data?.newUrl_img) {
+					setUrlImage(data.newUrl_img);
 				}
 			})
 			.catch((err) => {
@@ -160,6 +159,30 @@ export default function EditIngredient(props) {
 		postIngredient(id, refIngredient.current.value, () => {
 			refIngredient.current.value = '';
 		});
+	};
+
+	const putPriceIngredient = () => {
+		fetch(
+			configProject.dir_url + configProject.api_urls.putPriceIngredient,
+			{
+				method: 'PUT',
+				headers: configProject.headersList,
+				body: JSON.stringify({
+					id_menu: id,
+					price: refInputPrice.current.value,
+				}),
+			}
+		)
+			.then((res) => {
+				if (res.status === 200) {
+					console.log('Se guardo correctamente');
+				} else {
+					console.log('hubo error al guardar el precio');
+				}
+			})
+			.catch((err) => {
+				console.log('Error putPriceIngredient', err);
+			});
 	};
 
 	const postIngredient = (id_menu, description, callback) => {
@@ -325,7 +348,10 @@ export default function EditIngredient(props) {
 										INGRESE DATOS DEL TIPO NUMERICO Y CON 2
 										DIGITOS DESPUES DEL "."
 									</Form.Control.Feedback>
-									<Button variant="primary">
+									<Button
+										variant="primary"
+										onClick={putPriceIngredient}
+									>
 										Guardar Monto
 									</Button>
 								</InputGroup>
