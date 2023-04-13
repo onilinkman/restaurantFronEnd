@@ -1,21 +1,54 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useRef, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import ShowQR from './showQR';
+import configProject from '../../../configProject.json';
 
 export default function Login(args) {
+	const refUsername = useRef();
+	const refPassword = useRef();
+
+	const navigate = useNavigate();
+
+	const [isUnauthorized, setIsUnauthorized] = useState(false);
+
+	let loginSession = async (username, password) => {
+		await fetch(configProject.dir_url + configProject.api_urls.login, {
+			method: 'POST',
+			headers: configProject.headersList,
+			body: JSON.stringify({
+				username,
+				password,
+			}),
+		})
+			.then((response) => {
+				if (response.status === 200) {
+					return response.json('/');
+				} else {
+					setIsUnauthorized(true);
+				}
+			})
+			.then((data) => {
+				if (data) {
+					localStorage.setItem('x-token', data.token);
+					args.updateToken(data.token);
+					navigate('/');
+				} else {
+					console.log('error');
+				}
+			})
+			.catch((err) => console.log('Error loginSession:', err));
+	};
+
 	return (
 		<React.Fragment>
-            <div className='container translate-middl '>
-			    <ShowQR />
-
-            </div>
+			<div className="container translate-middl ">
+				<ShowQR />
+			</div>
 			<section>
 				<div className="container ">
 					<div className="row d-flex justify-content-center align-items-center ">
 						<div className="col-12 col-md-8 col-lg-6 col-xl-5">
-							<div
-								className="card bg-dark text-white"
-							>
+							<div className="card bg-dark text-white">
 								<div className="card-body p-5 text-center">
 									<div className="mb-md-5 mt-md-4 pb-5">
 										<h2 className="fw-bold mb-2 text-uppercase">
@@ -31,12 +64,13 @@ export default function Login(args) {
 												type="email"
 												id="typeEmailX"
 												className="form-control form-control-lg"
+												ref={refUsername}
 											/>
 											<label
 												className="form-label"
 												htmlFor="typeEmailX"
 											>
-												Email
+												Username
 											</label>
 										</div>
 
@@ -45,24 +79,46 @@ export default function Login(args) {
 												type="password"
 												id="typePasswordX"
 												className="form-control form-control-lg"
+												ref={refPassword}
 											/>
 											<label
 												className="form-label"
 												htmlFor="typePasswordX"
 											>
-												Password
+												Contraseña
 											</label>
 										</div>
 
 										<p className="small mb-5 pb-lg-2">
-											<Link className="text-white-50" to="/">
-												Forgot password?
+											<Link
+												className="text-white-50"
+												to="/"
+											>
+												Olvido su contraseña?
 											</Link>
 										</p>
 
+										{isUnauthorized ? (
+											<p>
+												No valido Verifique sus
+												credenciales
+											</p>
+										) : (
+											<></>
+										)}
 										<button
 											className="btn btn-outline-light btn-lg px-5"
 											type="submit"
+											onClick={() => {
+												let username =
+													refUsername.current.value.trim();
+												let password =
+													refPassword.current.value;
+												loginSession(
+													username,
+													password
+												);
+											}}
 										>
 											Iniciar Sesion
 										</button>
@@ -82,12 +138,12 @@ export default function Login(args) {
 
 									<div>
 										<p className="mb-0">
-											Don't have an account?{' '}
+											No tiene una cuenta?{' '}
 											<Link
 												to="/"
 												className="text-white-50 fw-bold"
 											>
-												Sign Up
+												Registrate!
 											</Link>
 										</p>
 									</div>

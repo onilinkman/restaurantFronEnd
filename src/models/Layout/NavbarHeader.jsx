@@ -31,7 +31,10 @@ export default function NavbarHeader(props) {
 								Separated link
 							</NavDropdown.Item>
 						</NavDropdown>
-						<Nav.Link as={Link} className='nav-link' to="/login" eventKey={"/login"} onClick={scrollTop}>Login</Nav.Link>
+						{props.isLogin?
+						<Nav.Link as={Link} className='nav-link text-danger' to="/" eventKey={"/"} onClick={props.logout}>Cerrar Sesion</Nav.Link>:
+						<Nav.Link as={Link} className='nav-link' to="/login" eventKey={"/login"} onClick={scrollTop}>Iniciar Sesion</Nav.Link>
+						}
 					</Nav>
 				</Navbar.Collapse>
 			</Container>

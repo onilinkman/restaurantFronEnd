@@ -1,6 +1,6 @@
 
 import './App.css';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Layout from './models/Layout/Layout';
 import Login from './models/Pages/Login/Login';
 import Main from './models/Pages/main/Main';
@@ -10,19 +10,66 @@ import AddSection from './models/Pages/Cocina/AddSection/addSection';
 import Relation from './models/Pages/Cocina/Relation/Relation';
 import EditIngredient from './models/Pages/Cocina/EditIngredient/EditIngredient';
 import Menu from './models/Pages/Menu/Menu';
+import jwt_decode from 'jwt-decode'
+import {  useEffect, useState } from 'react';
 
 function App() {
+	const [token,setToken]=useState(localStorage.getItem('x-token'))
+	const [isLogin,setIsLogin]=useState(false)
+	const authentificator=(component)=>{
+		let rol=0
+		if(token){
+			rol= jwt_decode(token)?.uuid?.id_rol?jwt_decode(token)?.uuid?.id_rol:0
+		}
+		return rol === 1 ?component:<Navigate to={'/login'} replace={true}/>
+	}
+
+	
+	
+	useEffect(() => {
+
+		const handleStorageChange = () => {
+			const newToken = localStorage.getItem('x-token');
+			if(newToken){
+				let exp=jwt_decode(newToken)?.exp
+				console.log(exp)
+				if(Date.now()>=exp*1000){
+					localStorage.removeItem('x-token')
+					setIsLogin(false)
+					setToken(null)
+					return
+				}
+			}
+			
+			setIsLogin(token!==null)
+			setToken(newToken);
+		};
+		handleStorageChange()
+		window.addEventListener('storage', handleStorageChange);
+
+		return () => {
+			window.removeEventListener('storage', handleStorageChange);
+		};
+	}, [isLogin,token]);
+
 	return (
 		<BrowserRouter>
-			<Layout>
+			<Layout isLogin={isLogin} logout={()=>{
+				localStorage.removeItem('x-token')
+				setIsLogin(false)
+				setToken(null)
+			}}>
 				<Routes>
-					<Route exact path='/login' element={<Login/>}/>
-					<Route exact path='/' element={<Main/>}/>
-					<Route exact path='/Cocina' element={<Cocina/>}/>
-					<Route exact path='/Cocina/add' element={<AddIngredient />} />
-					<Route exact path='/Cocina/sections' element={<AddSection />} />
-					<Route exact path='/Cocina/relation' element={<Relation />} />
-					<Route path='/Cocina/edit' element={<EditIngredient />} />
+					<Route exact path='/login' element={<Login updateToken={(token)=>{
+						setIsLogin(token!==null)
+						setToken(token)
+					}}/>}/>
+					<Route exact path='/' element={<Main/>} />
+					<Route exact path='/Cocina' element={authentificator(<Cocina/>)} />
+					<Route exact path='/Cocina/add' element={authentificator(<AddIngredient />)} />
+					<Route exact path='/Cocina/sections' element={authentificator(<AddSection />)} />
+					<Route exact path='/Cocina/relation' element={authentificator(<Relation />)} />
+					<Route path='/Cocina/edit' element={authentificator(<EditIngredient />)} />
 					<Route exact path='/Menu' element={<Menu />} />
 				</Routes>
 			</Layout>

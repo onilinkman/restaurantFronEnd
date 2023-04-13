@@ -2,6 +2,7 @@
 	"dir_url": "http://192.168.0.123:8000",
 	"dir_url_dev": "https://my.api.mockaroo.com",
 	"api_urls": {
+		"login":"/api/auth/login",
 		"getIp": "/getIp",
 		"recetas": "/api/recetas",
 		"addItem": "/api/addItem",

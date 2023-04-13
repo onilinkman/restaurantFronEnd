@@ -11,7 +11,7 @@ class Layout extends React.Component {
 			<div
 				className="container-fluid bs-secondary-bg bg-dark bg-gradient "
 			>
-				<NavbarHeader />
+				<NavbarHeader isLogin={this.props.isLogin} logout={this.props.logout}/>
 				{children}
 				<Footer/>
 			</div>
