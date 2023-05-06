@@ -10,7 +10,7 @@ export default function NavbarHeader(props) {
 	return (
 		<Navbar collapseOnSelect bg="dark" expand="lg" variant='dark' className='sticky-top'>
 			<Container>
-				<Navbar.Brand>ExultSoft</Navbar.Brand>
+				<Navbar.Brand>ExultTec</Navbar.Brand>
 				<Navbar.Toggle aria-controls="responsive-navbar-nav" />
 				<Navbar.Collapse id="responsive-navbar-nav">
 					<Nav className="mr-auto">

@@ -10,8 +10,12 @@ import AddSection from './models/Pages/Cocina/AddSection/addSection';
 import Relation from './models/Pages/Cocina/Relation/Relation';
 import EditIngredient from './models/Pages/Cocina/EditIngredient/EditIngredient';
 import Menu from './models/Pages/Menu/Menu';
+import Personal from './models/Pages/Personal/Personal';
 import jwt_decode from 'jwt-decode'
 import {  useEffect, useState } from 'react';
+import AddPersonal from './models/Pages/Personal/AddPersonal/AddPersonal';
+import PersonnelControl from './models/Pages/Personal/PersonnelControl/PersonnelControl';
+import Denied from './models/Pages/Denied/Denied';
 
 function App() {
 	const [token,setToken]=useState(localStorage.getItem('x-token'))
@@ -32,7 +36,6 @@ function App() {
 			const newToken = localStorage.getItem('x-token');
 			if(newToken){
 				let exp=jwt_decode(newToken)?.exp
-				console.log(exp)
 				if(Date.now()>=exp*1000){
 					localStorage.removeItem('x-token')
 					setIsLogin(false)
@@ -70,7 +73,11 @@ function App() {
 					<Route exact path='/Cocina/sections' element={authentificator(<AddSection />)} />
 					<Route exact path='/Cocina/relation' element={authentificator(<Relation />)} />
 					<Route path='/Cocina/edit' element={authentificator(<EditIngredient />)} />
+					<Route exact path='/Personal' element={authentificator(<Personal />)} />
+					<Route exact path='/Personal/AddPersonal' element={authentificator(<AddPersonal/>)} />
+					<Route exact path='/Personal/Control' element={authentificator(<PersonnelControl />)} />
 					<Route exact path='/Menu' element={<Menu />} />
+					<Route exact path='/Denied' element={<Denied />} />
 				</Routes>
 			</Layout>
 		</BrowserRouter>

@@ -4,7 +4,7 @@ import Modal from 'react-bootstrap/Modal';
 
 /**
  *example for add icon iconOnClick={(f) => {return (<TiDeleteOutline color="black"	size="25px"	onClick={f}/>);}}
- * @param {iconOnClick,title,saveChangeBtn,acceptBtn} props
+ * @param {iconOnClick,title,saveChangeBtn,acceptBtn,isActiveAcceptBtn} props
  * @returns
  */
 export default function ModalInput(props) {
@@ -34,9 +34,9 @@ export default function ModalInput(props) {
 					<Button variant="secondary" onClick={handleClose}>
 						Cancelar
 					</Button>
-					<Button variant="primary" onClick={saveChange}>
+					{props.isActiveAcceptBtn===undefined || props.isActiveAcceptBtn?<Button variant="primary" onClick={saveChange}>
 						{acceptBtn}
-					</Button>
+					</Button>:<></>}
 				</Modal.Footer>
 			</Modal>
 		</>

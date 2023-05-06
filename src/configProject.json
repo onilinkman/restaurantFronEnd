@@ -2,7 +2,7 @@
 	"dir_url": "http://192.168.0.123:8000",
 	"dir_url_dev": "https://my.api.mockaroo.com",
 	"api_urls": {
-		"login":"/api/auth/login",
+		"login": "/api/auth/login",
 		"getIp": "/getIp",
 		"recetas": "/api/recetas",
 		"addItem": "/api/addItem",
@@ -21,17 +21,30 @@
 		"putPriceIngredient": "/api/putPriceIngredient",
 		"deleteItem": "/api/deleteItem",
 		"updateImage": "/api/updateImage",
-		"getIdsMenuBySection": "/api/getIdsMenuBySection"
+		"getIdsMenuBySection": "/api/getIdsMenuBySection",
+		"addUserPersonal": "/api/addUserPersonal",
+		"getAllPersonnel": "/api/v1/getPersonnel",
+		"updatePersonnelIsActive": "/api/updatePersonnelIsActive",
+		"getAccessModulePersonnel": "/api/getAccessModulePersonnel",
+		"addAccessModulePersonnel": "/api/addAccessModulePersonnel",
+		"deleteAccessModulePersonnel": "/api/deleteAccessModulePersonnel"
 	},
 	"img_urls": {
 		"getImgMenu": "/uploads/imgMenu"
 	},
 	"headersList": {
 		"Accept": "*/*",
-		"X-API-Key": "afe6ef90",
 		"Content-Type": "application/json"
 	},
 	"headersData": {
 		"Accept": "*/*"
-	}
+	},
+	"ListModules": [
+		"Menu",
+		"Mesas",
+		"Cocina",
+		"Tienda",
+		"Personal",
+		"Configuracion"
+	]
 }

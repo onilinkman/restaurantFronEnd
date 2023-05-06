@@ -143,9 +143,8 @@ export default function AddSection(props) {
 								}}
 								saveChangeBtn={() => {
 									let desc = document.getElementById(
-										data[i].name + data[i].id_section
+										data[i].name +""+ data[i].id_section
 									);
-									console.log(desc.value);
 									saveEdit(data[i].id_section, desc.value);
 								}}
 								acceptBtn={'Guardar cambio'}
@@ -156,11 +155,10 @@ export default function AddSection(props) {
 									</label>
 									<textarea
 										className="form-control"
-										id={data[i].name + data[i].id_section}
+										id={data[i].name +""+ data[i].id_section}
 										rows="3"
-									>
-										{data[i].description}
-									</textarea>
+										defaultValue={data[i].description}
+									/>
 								</div>
 							</ModalInput>
 						</td>

@@ -58,7 +58,7 @@ export default function ShowQR(args) {
 			})
 				.then((res) => res.json())
 				.then((data) => {
-					if (data.ip.length > 1) {
+					if (data.ip.length >= 1) {
 						setAccordionIp(showSelectIP(data.ip));
 					} else {
 						setIpv4('http://' + data[0].ip + ':8000/');
