@@ -10,7 +10,7 @@ import {
 } from 'react-bootstrap';
 import FormValidated from '../../../components/InputsValidated/FormValidated';
 import configProject from '../../../../configProject.json';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 export default function AddPersonal(props) {
 	const [validated, setValidated] = useState(false);
@@ -34,6 +34,8 @@ export default function AddPersonal(props) {
 		setValidated(true);
 	};
 
+	const navigate=useNavigate();
+
 	const makeJson = async () => {
 		setValidated(true);
 		if (refForm.current.checkValidity()) {
@@ -42,29 +44,29 @@ export default function AddPersonal(props) {
 				refConfirmationPassword.current.getValueInput();
 			if (confPassword) {
 				let user = {
-					username: refUsername.current.getValueInput(),
-					password: refPassword.current.getValueInput(),
-					first_names: refFirst_names.current.getValueInput(),
-					p_lastname: refP_lastname.current.getValueInput(),
-					m_lastname: refM_lastname.current.getValueInput(),
-					ci: refCi.current.getValueInput(),
-					email: refEmail.current.getValueInput(),
+					username: refUsername.current.getValueInput().trim(),
+					password: refPassword.current.getValueInput().trim(),
+					first_names: refFirst_names.current.getValueInput().trim(),
+					p_lastname: refP_lastname.current.getValueInput().trim(),
+					m_lastname: refM_lastname.current.getValueInput().trim(),
+					ci: refCi.current.getValueInput().trim(),
+					email: refEmail.current.getValueInput().trim(),
 				};
 				setIsComplete(false);
 
-				await fetch(
-					configProject.dir_url +
-						configProject.api_urls.addUserPersonal,
-					{
-						method: 'POST',
-						headers: {
-							Accept: '*/*',
-							'Content-Type': 'application/json',
-							'x-token': localStorage.getItem('x-token'),
-						},
-						body: JSON.stringify(user),
-					}
-				)
+				let apiUrl = props?.isClient
+					? configProject.api_urls.addUserClient
+					: configProject.api_urls.addUserPersonal;
+
+				await fetch(configProject.dir_url + apiUrl, {
+					method: 'POST',
+					headers: {
+						Accept: '*/*',
+						'Content-Type': 'application/json',
+						'x-token': localStorage.getItem('x-token'),
+					},
+					body: JSON.stringify(user),
+				})
 					.then((res) => res.json())
 					.then((data) => {
 						setIsComplete(true);
@@ -90,17 +92,21 @@ export default function AddPersonal(props) {
 									break;
 							}
 						} else {
-							setInfAlert(
-								<Alert key={'success'} variant="success">
-									Se agrego correctamente, Si necesita
-									editarlo o asignarle algun rol vaya a{' '}
-									<Link to="/Personal/ManagerPersonal">
-										<Badge bg="info">
-											Control del personal
-										</Badge>
-									</Link>{' '}
-								</Alert>
-							);
+							if(props.isClient){
+								navigate('/login?account=1')
+							}else{
+								setInfAlert(
+									<Alert key={'success'} variant="success">
+										Se agrego correctamente, Si necesita
+										editarlo o asignarle algun rol vaya a{' '}
+										<Link to="/Personal/ManagerPersonal">
+											<Badge bg="info">
+												Control del personal
+											</Badge>
+										</Link>{' '}
+									</Alert>
+								);
+							}
 						}
 					})
 					.catch((err) => {
@@ -117,7 +123,11 @@ export default function AddPersonal(props) {
 	return (
 		<Container>
 			<div className="justify-content-md-center text-center">
-				<p className="fs-1 text-white fw-bolder">AGREGAR PERSONAL</p>
+				<p className="fs-1 text-white fw-bolder">
+					{props.isClient
+						? 'CREANDO CUENTA DE CLIENTE'
+						: 'AGREGAR PERSONAL'}
+				</p>
 				<Form
 					ref={refForm}
 					noValidate

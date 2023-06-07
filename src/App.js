@@ -20,12 +20,25 @@ import Denied from './models/Pages/Denied/Denied';
 function App() {
 	const [token,setToken]=useState(localStorage.getItem('x-token'))
 	const [isLogin,setIsLogin]=useState(false)
-	const authentificator=(component)=>{
+	const authentificator=(component,access)=>{
 		let rol=0
+		let access_component=[]
 		if(token){
-			rol= jwt_decode(token)?.uuid?.id_rol?jwt_decode(token)?.uuid?.id_rol:0
+			let decode=jwt_decode(token)
+			rol= decode?.uuid?.id_rol?decode?.uuid?.id_rol:0
+			access_component=decode?.uuid?.modules
 		}
-		return rol === 1 ?component:<Navigate to={'/login'} replace={true}/>
+		switch (rol) {
+			case 1:
+				return component;
+			case 2:
+				return access_component.some(element=>element===access)?component:<Denied/>;
+			case 3:
+				return <Denied/>
+			default:
+				return <Navigate to={'/login'} replace={true}/>;
+		}
+
 	}
 
 	
@@ -63,19 +76,20 @@ function App() {
 				setToken(null)
 			}}>
 				<Routes>
-					<Route exact path='/login' element={<Login updateToken={(token)=>{
+					<Route path='/login' element={<Login updateToken={(token)=>{
 						setIsLogin(token!==null)
 						setToken(token)
 					}}/>}/>
 					<Route exact path='/' element={<Main/>} />
-					<Route exact path='/Cocina' element={authentificator(<Cocina/>)} />
-					<Route exact path='/Cocina/add' element={authentificator(<AddIngredient />)} />
-					<Route exact path='/Cocina/sections' element={authentificator(<AddSection />)} />
-					<Route exact path='/Cocina/relation' element={authentificator(<Relation />)} />
-					<Route path='/Cocina/edit' element={authentificator(<EditIngredient />)} />
-					<Route exact path='/Personal' element={authentificator(<Personal />)} />
-					<Route exact path='/Personal/AddPersonal' element={authentificator(<AddPersonal/>)} />
-					<Route exact path='/Personal/Control' element={authentificator(<PersonnelControl />)} />
+					<Route exact path='/Cocina' element={authentificator(<Cocina/>,3)} />
+					<Route exact path='/Cocina/add' element={authentificator(<AddIngredient />,3)} />
+					<Route exact path='/Cocina/sections' element={authentificator(<AddSection />,3)} />
+					<Route exact path='/Cocina/relation' element={authentificator(<Relation />,3)} />
+					<Route path='/Cocina/edit' element={authentificator(<EditIngredient />,3)} />
+					<Route exact path='/Personal' element={authentificator(<Personal />,5)} />
+					<Route exact path='/Personal/AddPersonal' element={authentificator(<AddPersonal isClient={false} />,5)} />
+					<Route exact path='/Personal/AddClient' element={<AddPersonal isClient={true} />} />
+					<Route exact path='/Personal/Control' element={authentificator(<PersonnelControl />,5)} />
 					<Route exact path='/Menu' element={<Menu />} />
 					<Route exact path='/Denied' element={<Denied />} />
 				</Routes>

@@ -1,5 +1,6 @@
 import CardMenu from '../../components/CardMenu';
 import configProject from '../../../configProject.json';
+import BtnActionsMenu from './BtnActionsMenu';
 
 export default function ListMenu({ ...props }) {
 	return (
@@ -7,7 +8,7 @@ export default function ListMenu({ ...props }) {
 			{props.listMenu.map((obj, index) => {
 				return (
 					<CardMenu
-						key={index+""+obj.id_menu}
+						key={index + '' + obj.id_menu}
 						cardTitle={obj.title}
 						cardDescription={obj.description}
 						urlImage={
@@ -18,7 +19,9 @@ export default function ListMenu({ ...props }) {
 						}
 						price={obj.price}
 						onError={() => {}}
-					></CardMenu>
+					>
+						<BtnActionsMenu id={"action"+obj.id_menu}/>
+					</CardMenu>
 				);
 			})}
 		</div>

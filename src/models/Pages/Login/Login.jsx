@@ -1,9 +1,12 @@
 import React, { useRef, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import ShowQR from './showQR';
 import configProject from '../../../configProject.json';
+import { Alert } from 'react-bootstrap';
 
 export default function Login(args) {
+	const [searchParams] = useSearchParams();
+	console.log(searchParams.get('account'));
 	const refUsername = useRef();
 	const refPassword = useRef();
 
@@ -51,6 +54,15 @@ export default function Login(args) {
 							<div className="card bg-dark text-white">
 								<div className="card-body p-5 text-center">
 									<div className="mb-md-5 mt-md-4 pb-5">
+										{searchParams.get('account') === '1' ? (
+											<Alert variant="success">
+												Su cuenta a sido creada, Inicie
+												Sesion con su cuenta recien
+												creada
+											</Alert>
+										) : (
+											<></>
+										)}
 										<h2 className="fw-bold mb-2 text-uppercase">
 											Iniciar Sesion
 										</h2>
@@ -99,10 +111,10 @@ export default function Login(args) {
 										</p>
 
 										{isUnauthorized ? (
-											<p>
-												No valido Verifique sus
+											<Alert variant="danger">
+												No valido, Verifique sus
 												credenciales
-											</p>
+											</Alert>
 										) : (
 											<></>
 										)}
@@ -140,7 +152,7 @@ export default function Login(args) {
 										<p className="mb-0">
 											No tiene una cuenta?{' '}
 											<Link
-												to="/"
+												to="/Personal/AddClient"
 												className="text-white-50 fw-bold"
 											>
 												Registrate!

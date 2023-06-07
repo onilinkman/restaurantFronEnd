@@ -13,8 +13,6 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import Row from 'react-bootstrap/Row';
 import addPhoto from '../../../assets/add_photo.svg';
 import configProject from '../../../../configProject.json';
-import Spinner from 'react-bootstrap/Spinner';
-import Alert from 'react-bootstrap/Alert';
 
 export default function EditIngredient(props) {
 	const [searchParams] = useSearchParams();
@@ -31,7 +29,6 @@ export default function EditIngredient(props) {
 	const [items, setItems] = useState([]);
 	const [title, setTitle] = useState('Titulo');
 	const [urlImage, setUrlImage] = useState('');
-	const [selectedFile, setSelectedFile] = useState(null);
 
 	const refDescription = useRef(null);
 	const refIngredient = useRef(null);
@@ -47,7 +44,6 @@ export default function EditIngredient(props) {
 		if (file) {
 			const objectUrl = URL.createObjectURL(file);
 			refImgPreview.current.src = objectUrl;
-			setSelectedFile(file);
 		}
 		e.target.value = '';
 		updateImage(file);
@@ -162,6 +158,10 @@ export default function EditIngredient(props) {
 	};
 
 	const putPriceIngredient = () => {
+		if(refInputPrice.current.value.trim()===''){
+			setValidatedPrice(true)
+			return
+		}
 		fetch(
 			configProject.dir_url + configProject.api_urls.putPriceIngredient,
 			{

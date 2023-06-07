@@ -27,7 +27,8 @@
 		"updatePersonnelIsActive": "/api/updatePersonnelIsActive",
 		"getAccessModulePersonnel": "/api/getAccessModulePersonnel",
 		"addAccessModulePersonnel": "/api/addAccessModulePersonnel",
-		"deleteAccessModulePersonnel": "/api/deleteAccessModulePersonnel"
+		"deleteAccessModulePersonnel": "/api/deleteAccessModulePersonnel",
+		"addUserClient": "/api/addUserClient"
 	},
 	"img_urls": {
 		"getImgMenu": "/uploads/imgMenu"

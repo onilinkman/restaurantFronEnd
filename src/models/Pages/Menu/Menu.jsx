@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Row } from 'react-bootstrap';
+import {
+	Button,
+	Container,
+	OverlayTrigger,
+	Popover,
+	Row,
+} from 'react-bootstrap';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import FloatBtn from '../../components/FloatBtn/FloatBtn';
 import Section from './Section';
@@ -118,6 +124,33 @@ export default function Menu({ ...props }) {
 
 	return (
 		<>
+			<div
+				className="d-grid gap-2"
+				style={{
+					position: 'fixed',
+					zIndex: 2,
+					bottom: 0,
+					width: '100%',
+					display: 'grid',
+					justifyContent: 'center',
+					justifyItems: 'center',
+				}}
+			>
+				<OverlayTrigger
+					trigger={'click'}
+					/* show={false} */
+					placement="top"
+					overlay={<Popover id='popover-top-menu'>
+						<Popover.Body>
+							<strong>Primero agrege algo</strong>
+						</Popover.Body>
+					</Popover>}
+				>
+					<Button className="border " variant="info" size="lg">
+						Realizar pedido
+					</Button>
+				</OverlayTrigger>
+			</div>
 			<FloatBtn items={itemsFloatBtn}></FloatBtn>
 			<div className="container-fluid justify-content-md-center">
 				<Offcanvas
