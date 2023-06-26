@@ -19,10 +19,7 @@ export default function AddIngredient(props) {
 	const [validatedPrice, setValidatedPrice] = useState(false);
 
 	const [description, setDescription] =
-		useState(`Lorem ipsum dolor sit amet consectetur, adipisicing
-		elit. Quo ad, maiores aliquid quas perferendis quam
-		omnis. Sint saepe, excepturi aut debitis ab aliquam
-		quo odit suscipit, corporis nostrum corrupti magnam.`);
+		useState(`Inserte Descripcion`);
 	const [ingredientsArray, setIngredientsArray] = useState([]);
 	const [items, setItems] = useState([]);
 	const [title, setTitle] = useState('Titulo');

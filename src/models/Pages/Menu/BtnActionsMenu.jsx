@@ -33,9 +33,12 @@ const BtnActionsMenu = (props) => {
 			<Button
 				variant="outline-primary"
 				onClick={() => {
-					let input = refInput.current.value;
+					let input = refInput.current.value.trim();
 					setValidated(input.trim() === '');
-					toggleShow();
+					if (input !== '') {
+						props.onClick(input)
+						toggleShow();
+					}
 				}}
 			>
 				Agregar
@@ -44,9 +47,11 @@ const BtnActionsMenu = (props) => {
 				<Toast show={showMessage} onClose={toggleShow}>
 					<ToastHeader closeButton={true}>
 						<strong className="me-auto">Pedido agregado</strong>
-						<small>11 mins atras</small>
+						{/* <small>11 mins atras</small> */}
 					</ToastHeader>
-					<Toast.Body className='text-black'>se agrego correctamente</Toast.Body>
+					<Toast.Body className="text-black">
+						Se agrego correctamente
+					</Toast.Body>
 				</Toast>
 			</ToastContainer>
 		</>

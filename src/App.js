@@ -16,6 +16,7 @@ import {  useEffect, useState } from 'react';
 import AddPersonal from './models/Pages/Personal/AddPersonal/AddPersonal';
 import PersonnelControl from './models/Pages/Personal/PersonnelControl/PersonnelControl';
 import Denied from './models/Pages/Denied/Denied';
+import ShowOrders from './models/Pages/Menu/ShowOrders/ShowOrders';
 
 function App() {
 	const [token,setToken]=useState(localStorage.getItem('x-token'))
@@ -91,6 +92,7 @@ function App() {
 					<Route exact path='/Personal/AddClient' element={<AddPersonal isClient={true} />} />
 					<Route exact path='/Personal/Control' element={authentificator(<PersonnelControl />,5)} />
 					<Route exact path='/Menu' element={<Menu />} />
+					<Route exact path='/Menu/Orders' element={<ShowOrders />} />
 					<Route exact path='/Denied' element={<Denied />} />
 				</Routes>
 			</Layout>

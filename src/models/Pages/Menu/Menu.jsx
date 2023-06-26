@@ -12,9 +12,12 @@ import Section from './Section';
 
 import configProject from '../../../configProject.json';
 import ListMenu from './ListMenu';
+import { useNavigate } from 'react-router-dom';
 
 export default function Menu({ ...props }) {
 	const [show, setShow] = useState(false);
+
+	const navigate = useNavigate();
 
 	const handleClose = () => setShow(false);
 	const handleShow = () => setShow(true);
@@ -23,6 +26,7 @@ export default function Menu({ ...props }) {
 	const [title, setTitle] = useState('Todas las Categorias:');
 	const [arrayReceta, setArrayReceta] = useState([]);
 	let auxArrayReceta = [];
+	let arrayOrders = []; // in here save orders
 
 	const itemsFloatBtn = [
 		{
@@ -48,6 +52,19 @@ export default function Menu({ ...props }) {
 			.then((data) => {
 				if (data) {
 					let sec = [];
+					sec.push(
+						<Section
+							onClick={() => {
+								window.scrollTo(0, 0);
+								getAllIngredients();
+								setTitle('Todas las Categorias:');
+								handleClose();
+							}}
+							name="Todas las Categorias:"
+							description="Ver todos los platillos"
+							key={'allDish'}
+						/>
+					);
 					for (let i = 0; i < data.length; i++) {
 						if (data[i].is_deleted === 1) {
 							sec.push(
@@ -140,14 +157,30 @@ export default function Menu({ ...props }) {
 					trigger={'click'}
 					/* show={false} */
 					placement="top"
-					overlay={<Popover id='popover-top-menu'>
-						<Popover.Body>
-							<strong>Primero agrege algo</strong>
-						</Popover.Body>
-					</Popover>}
+					overlay={
+						<Popover id="popover-top-menu">
+							<Popover.Body>
+								<strong>Primero agrege algo</strong>
+							</Popover.Body>
+						</Popover>
+					}
 				>
-					<Button className="border " variant="info" size="lg">
-						Realizar pedido
+					<Button
+						className="border "
+						variant="info"
+						size="lg"
+						onClick={() => {
+							console.log(arrayOrders.length);
+							if (arrayOrders.length > 0) {
+								navigate('/Menu/Orders', {
+									state: {
+										data: arrayOrders,
+									},
+								});
+							}
+						}}
+					>
+						Ver Pedidos
 					</Button>
 				</OverlayTrigger>
 			</div>
@@ -178,7 +211,13 @@ export default function Menu({ ...props }) {
 				<div className="container-fluid text-white text-center fs-2 text-decoration-underline fst-italic fw-bold">
 					{title}
 				</div>
-				<ListMenu listMenu={arrayReceta} />
+				<ListMenu
+					listMenu={arrayReceta}
+					getAcountDish={(dishObject) => {
+						arrayOrders.push(dishObject);
+						console.log(arrayOrders);
+					}}
+				/>
 			</div>
 		</>
 	);

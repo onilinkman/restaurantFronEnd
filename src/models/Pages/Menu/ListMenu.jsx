@@ -20,7 +20,14 @@ export default function ListMenu({ ...props }) {
 						price={obj.price}
 						onError={() => {}}
 					>
-						<BtnActionsMenu id={"action"+obj.id_menu}/>
+						<BtnActionsMenu
+							id={'action' + obj.id_menu}
+							onClick={(input) => {
+								let dishObject = {...obj}
+								dishObject.acount=input
+								props.getAcountDish(dishObject);
+							}}
+						/>
 					</CardMenu>
 				);
 			})}
