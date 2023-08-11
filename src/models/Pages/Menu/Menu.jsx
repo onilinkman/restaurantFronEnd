@@ -14,6 +14,8 @@ import configProject from '../../../configProject.json';
 import ListMenu from './ListMenu';
 import { useNavigate } from 'react-router-dom';
 
+import OrdersDB from '../../indexdDB/ordersDB';
+
 export default function Menu({ ...props }) {
 	const [show, setShow] = useState(false);
 
@@ -25,8 +27,9 @@ export default function Menu({ ...props }) {
 	const [sections, setSection] = useState([]);
 	const [title, setTitle] = useState('Todas las Categorias:');
 	const [arrayReceta, setArrayReceta] = useState([]);
+	const [arrayOrders] = useState([]); // in here save orders
+	const [db] = useState(new OrdersDB());
 	let auxArrayReceta = [];
-	let arrayOrders = []; // in here save orders
 
 	const itemsFloatBtn = [
 		{
@@ -135,6 +138,13 @@ export default function Menu({ ...props }) {
 
 	useEffect(() => {
 		window.scrollTo(0, 0);
+		db.openDB()
+			.then((result) => {
+				console.log(result);
+			})
+			.catch((err) => {
+				console.log(err);
+			});
 		getSections();
 		getAllIngredients();
 	}, []);
@@ -170,14 +180,20 @@ export default function Menu({ ...props }) {
 						variant="info"
 						size="lg"
 						onClick={() => {
-							console.log(arrayOrders.length);
-							if (arrayOrders.length > 0) {
-								navigate('/Menu/Orders', {
-									state: {
-										data: arrayOrders,
-									},
+							db.getAllObjects()
+								.then((result) => {
+									console.log(result);
+									if (result.length > 0) {
+										navigate('/Menu/Orders', {
+											state: {
+												data: arrayOrders,
+											},
+										});
+									}
+								})
+								.catch((err) => {
+									console.log(err);
 								});
-							}
 						}}
 					>
 						Ver Pedidos
@@ -214,8 +230,7 @@ export default function Menu({ ...props }) {
 				<ListMenu
 					listMenu={arrayReceta}
 					getAcountDish={(dishObject) => {
-						arrayOrders.push(dishObject);
-						console.log(arrayOrders);
+						db.addObjectOrder(dishObject);
 					}}
 				/>
 			</div>

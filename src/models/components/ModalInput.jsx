@@ -32,7 +32,7 @@ export default function ModalInput(props) {
 				<Modal.Body>{props.children}</Modal.Body>
 				<Modal.Footer>
 					<Button variant="secondary" onClick={handleClose}>
-						Cancelar
+						{props.textCancel===undefined ? 'Cancelar' : props.textCancel}
 					</Button>
 					{props.isActiveAcceptBtn===undefined || props.isActiveAcceptBtn?<Button variant="primary" onClick={saveChange}>
 						{acceptBtn}

@@ -2,7 +2,7 @@ import React, {  useState } from 'react';
 import Table from 'react-bootstrap/Table';
 import Paginator from '../../../components/Paginator';
 import Button from 'react-bootstrap/Button';
-import { GoDiffAdded } from 'react-icons/go';
+import { VscDiffAdded } from 'react-icons/vsc';
 
 export default function TablePlatillos(props) {
 	const SIZE_TABLE = 3;
@@ -32,7 +32,7 @@ export default function TablePlatillos(props) {
 							className="text-white fw-bolder"
 							onClick={() => props.onClickAdd(props.data[i].id_menu)}
 						>
-							<GoDiffAdded size={'24px'} />
+							<VscDiffAdded size={'24px'} />
 						</Button>
 					</td>
 				</tr>

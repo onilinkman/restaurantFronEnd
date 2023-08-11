@@ -44,7 +44,7 @@ const BtnActionsMenu = (props) => {
 				Agregar
 			</Button>
 			<ToastContainer className="p-3" position="bottom-center">
-				<Toast show={showMessage} onClose={toggleShow}>
+				<Toast bg='secondary' show={showMessage} onClose={toggleShow}>
 					<ToastHeader closeButton={true}>
 						<strong className="me-auto">Pedido agregado</strong>
 						{/* <small>11 mins atras</small> */}

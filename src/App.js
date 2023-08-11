@@ -17,6 +17,7 @@ import AddPersonal from './models/Pages/Personal/AddPersonal/AddPersonal';
 import PersonnelControl from './models/Pages/Personal/PersonnelControl/PersonnelControl';
 import Denied from './models/Pages/Denied/Denied';
 import ShowOrders from './models/Pages/Menu/ShowOrders/ShowOrders';
+import Mesas from './models/Pages/Mesas/Mesas';
 
 function App() {
 	const [token,setToken]=useState(localStorage.getItem('x-token'))
@@ -82,6 +83,7 @@ function App() {
 						setToken(token)
 					}}/>}/>
 					<Route exact path='/' element={<Main/>} />
+					<Route exact path='/Mesas' element={authentificator(<Mesas />,2)} />
 					<Route exact path='/Cocina' element={authentificator(<Cocina/>,3)} />
 					<Route exact path='/Cocina/add' element={authentificator(<AddIngredient />,3)} />
 					<Route exact path='/Cocina/sections' element={authentificator(<AddSection />,3)} />

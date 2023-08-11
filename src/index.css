@@ -30,3 +30,7 @@ input::-webkit-inner-spin-button {
 input[type='number'] {
 	-moz-appearance: textfield;
 }
+
+.dragging{
+	pointer-events: none;
+}

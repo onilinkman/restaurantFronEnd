@@ -28,7 +28,8 @@
 		"getAccessModulePersonnel": "/api/getAccessModulePersonnel",
 		"addAccessModulePersonnel": "/api/addAccessModulePersonnel",
 		"deleteAccessModulePersonnel": "/api/deleteAccessModulePersonnel",
-		"addUserClient": "/api/addUserClient"
+		"addUserClient": "/api/addUserClient",
+		"addMesa": "/api/addMesa"
 	},
 	"img_urls": {
 		"getImgMenu": "/uploads/imgMenu"

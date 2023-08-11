@@ -1,0 +1,23 @@
+.selectedFloor:hover {
+	background: #5d5d5d;
+}
+
+.scrollable-element {
+}
+
+.scrollable-element::-webkit-scrollbar {
+	width: 7px;
+    height: 3px;
+}
+
+/* Estilo de la línea de scroll */
+.scrollable-element::-webkit-scrollbar-track {
+	background: #4d4d4d;
+}
+
+/* Estilo del thumb de la línea de scroll */
+.scrollable-element::-webkit-scrollbar-thumb {
+	background-color: #686868;
+	border-radius: 3px;
+	border: 0px none #c4c4c4;
+}
